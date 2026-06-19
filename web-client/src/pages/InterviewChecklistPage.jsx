@@ -146,18 +146,17 @@ export default function InterviewChecklistPage() {
       <div className="space-y-6">
         {checklistSections.map((section, sIdx) => {
           const sectionCompleted = section.items.every(item => checked.has(item.id));
-          
+
           return (
             <motion.div
               key={section.title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.1 + sIdx * 0.08 }}
-              className={`bg-white dark:bg-slate-900 rounded-2xl border shadow-sm overflow-hidden transition-all duration-300 ${
-                sectionCompleted 
-                  ? 'border-emerald-200 dark:border-emerald-800' 
+              className={`bg-white dark:bg-slate-900 rounded-2xl border shadow-sm overflow-hidden transition-all duration-300 ${sectionCompleted
+                  ? 'border-emerald-200 dark:border-emerald-800'
                   : 'border-slate-100 dark:border-slate-800'
-              }`}
+                }`}
             >
               {/* Section Header */}
               <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
@@ -179,14 +178,13 @@ export default function InterviewChecklistPage() {
                 {section.items.map((item) => {
                   const isChecked = checked.has(item.id);
                   const isTipOpen = showTip === item.id;
-                  
+
                   return (
                     <div key={item.id}>
                       <div
                         onClick={() => toggleItem(item.id)}
-                        className={`flex items-center gap-4 px-6 py-4 cursor-pointer transition-all duration-200 group ${
-                          isChecked ? 'bg-emerald-50/30 dark:bg-emerald-900/5' : 'hover:bg-slate-50 dark:hover:bg-slate-800/30'
-                        }`}
+                        className={`flex items-center gap-4 px-6 py-4 cursor-pointer transition-all duration-200 group ${isChecked ? 'bg-emerald-50/30 dark:bg-emerald-900/5' : 'hover:bg-slate-50 dark:hover:bg-slate-800/30'
+                          }`}
                       >
                         <div className="shrink-0">
                           {isChecked ? (
@@ -195,11 +193,10 @@ export default function InterviewChecklistPage() {
                             <Circle size={22} className="text-slate-300 dark:text-slate-600 group-hover:text-slate-400" />
                           )}
                         </div>
-                        <span className={`flex-1 text-sm font-medium transition-all ${
-                          isChecked 
-                            ? 'text-slate-400 dark:text-slate-500 line-through decoration-slate-300 dark:decoration-slate-600' 
+                        <span className={`flex-1 text-sm font-medium transition-all ${isChecked
+                            ? 'text-slate-400 dark:text-slate-500 line-through decoration-slate-300 dark:decoration-slate-600'
                             : 'text-slate-700 dark:text-slate-200'
-                        }`}>
+                          }`}>
                           {item.text}
                         </span>
                         <button
@@ -207,16 +204,15 @@ export default function InterviewChecklistPage() {
                             e.stopPropagation();
                             setShowTip(isTipOpen ? null : item.id);
                           }}
-                          className={`text-xs font-semibold px-2 py-1 rounded-lg transition-all ${
-                            isTipOpen 
-                              ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400' 
+                          className={`text-xs font-semibold px-2 py-1 rounded-lg transition-all ${isTipOpen
+                              ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
                               : 'text-slate-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20'
-                          }`}
+                            }`}
                         >
                           💡 Tip
                         </button>
                       </div>
-                      
+
                       {isTipOpen && (
                         <motion.div
                           initial={{ opacity: 0, height: 0 }}

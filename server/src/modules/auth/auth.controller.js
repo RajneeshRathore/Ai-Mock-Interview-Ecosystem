@@ -29,42 +29,44 @@ class AuthController {
   // @route   POST /api/auth/login
   // @access  Public
   async login(req, res, next) {
-    try {
-      const { email, password } = req.body;
-      const user = await authRepository.findUserByEmail(email, true);
+  try {
+    const { email, password } = req.body;
 
-      if (!user) {
-        res.status(401);
-        throw new Error('Invalid credentials');
-      }
+    console.log("Email:", email);
 
-      if (!user.isEmailVerified) {
-        res.status(401);
-        throw new Error('Please verify your email first');
-      }
+    const user = await authRepository.findUserByEmail(email, true);
+    console.log("User:", user);
 
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        res.status(401);
-        throw new Error('Invalid credentials');
-      }
-
-      const token = authService.generateToken(user._id);
-
-      res.status(200).json({
-        success: true,
-        token,
-        data: {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role
-        }
-      });
-    } catch (error) {
-      next(error);
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
     }
+
+    console.log("Stored password:", user.password);
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    console.log("Password match:", isMatch);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = authService.generateToken(user._id);
+
+    return res.json({
+      success: true,
+      token,
+      data: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
+}
 
   // @desc    Verify OTP
   // @route   POST /api/auth/verify-otp
