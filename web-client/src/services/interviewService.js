@@ -6,6 +6,7 @@ export const startInterview = async (userId, type, role, difficulty) => {
     experienceLevel: difficulty,
     interviewType: type
   });
+  // api interceptor returns response.data from axios = { success, data }
   return response.data;
 };
 

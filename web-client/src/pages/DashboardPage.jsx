@@ -7,7 +7,7 @@ import { TrendChart } from '../features/analytics/components/TrendChart';
 import { BadgesGrid } from '../features/dashboard/components/BadgesGrid';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Video, FileText, BarChart3, ArrowRight } from 'lucide-react';
+import { Video, FileText, BarChart3, ArrowRight, Briefcase, Map, Users } from 'lucide-react';
 
 import Skeleton from '../components/loaders/Skeleton';
 
@@ -30,8 +30,8 @@ export default function DashboardPage() {
 
   const quickActions = [
     { title: 'Start Interview', desc: 'Begin a new AI mock interview', icon: <Video size={22} />, path: '/dashboard/interviews/new', gradient: 'from-violet-500 to-purple-600' },
-    { title: 'Upload Resume', desc: 'Analyze your resume with AI', icon: <FileText size={22} />, path: '/dashboard/resume', gradient: 'from-blue-500 to-cyan-500' },
-    { title: 'View Reports', desc: 'Check your feedback reports', icon: <BarChart3 size={22} />, path: '/dashboard/reports', gradient: 'from-emerald-500 to-teal-500' },
+    { title: 'Job Tracker', desc: 'Track your applications', icon: <Briefcase size={22} />, path: '/dashboard/applications', gradient: 'from-emerald-500 to-teal-500' },
+    { title: 'HR Prep', desc: 'Practice behavioral questions', icon: <Users size={22} />, path: '/dashboard/hr-prep', gradient: 'from-amber-500 to-orange-500' },
   ];
 
   if (!stats) return (

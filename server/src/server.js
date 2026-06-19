@@ -10,15 +10,16 @@ import './modules/feedback/feedback.worker.js';
 const PORT = process.env.PORT || 5000;
 
 // Connect to Database
-connectDB();
+await connectDB();
 
 // Create HTTP server and attach Socket.IO
 const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: ['http://localhost:5173', 'http://localhost:3000'],
-    methods: ['GET', 'POST']
+    origin:process.env.FRONTEND_URL,
+    methods: ['GET', 'POST'],
+    credentials: true,
   }
 });
 

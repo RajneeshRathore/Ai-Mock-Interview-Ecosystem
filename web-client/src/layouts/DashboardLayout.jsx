@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Users, FileText, LogOut, Video, BarChart2, FileBarChart, UserCircle, Moon, Sun, Bell, BookOpen } from "lucide-react";
+import { LayoutDashboard, Users, FileText, LogOut, Video, BarChart2, FileBarChart, UserCircle, Moon, Sun, Bell, BookOpen, Building2, MessageSquare, Map, Briefcase, Trophy, ClipboardCheck } from "lucide-react";
 import { NotificationDropdown } from "../components/common/NotificationDropdown";
 import { useAuth } from "../app/providers/AuthProvider";
 import { useState, useEffect } from "react";
@@ -30,12 +30,19 @@ export default function DashboardLayout() {
 
   const navItems = [
     { name: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
+    { name: 'Roadmap', path: '/dashboard/roadmap', icon: <Map size={20} /> },
     { name: 'Interviews', path: '/dashboard/interviews/new', icon: <Video size={20} /> },
+    { name: 'HR Prep', path: '/dashboard/hr-prep', icon: <Users size={20} /> },
     { name: 'Resume Analyzer', path: '/dashboard/resume', icon: <FileText size={20} /> },
     { name: 'Reports', path: '/dashboard/reports', icon: <FileBarChart size={20} /> },
     { name: 'Analytics', path: '/dashboard/analytics', icon: <BarChart2 size={20} /> },
     { name: 'History', path: '/dashboard/interviews/history', icon: <FileText size={20} /> },
     { name: 'Learn DSA', path: '/dashboard/learn', icon: <BookOpen size={20} /> },
+    { name: 'Company Prep', path: '/dashboard/companies', icon: <Building2 size={20} /> },
+    { name: 'Job Tracker', path: '/dashboard/applications', icon: <Briefcase size={20} /> },
+    { name: 'Leaderboard', path: '/dashboard/leaderboard', icon: <Trophy size={20} /> },
+    { name: 'Checklist', path: '/dashboard/checklist', icon: <ClipboardCheck size={20} /> },
+    { name: 'Community', path: '/dashboard/community', icon: <MessageSquare size={20} /> },
   ];
 
   return (

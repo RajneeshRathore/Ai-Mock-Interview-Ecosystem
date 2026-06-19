@@ -18,7 +18,7 @@ export default function VerifyEmailPage() {
     try {
       const res = await verifyOTP(email, otp);
       if (res.success) {
-        navigate('/dashboard', { replace: true });
+        navigate('/login', { replace: true });
       } else {
         setError(res.error || 'Invalid OTP');
       }

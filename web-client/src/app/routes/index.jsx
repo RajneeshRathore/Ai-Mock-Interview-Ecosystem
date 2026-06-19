@@ -30,6 +30,15 @@ const ResetPasswordPage = lazy(() => import('../../pages/ResetPasswordPage'));
 const ProfilePage = lazy(() => import('../../pages/ProfilePage'));
 const TranscriptPage = lazy(() => import('../../pages/TranscriptPage'));
 const LearnPage = lazy(() => import('../../pages/LearnPage'));
+const CompanyHubPage = lazy(() => import('../../pages/CompanyHubPage'));
+const CompanyDetailPage = lazy(() => import('../../pages/CompanyDetailPage'));
+const CommunityPage = lazy(() => import('../../pages/CommunityPage'));
+const PostDetailPage = lazy(() => import('../../pages/PostDetailPage'));
+const ApplicationTrackerPage = lazy(() => import('../../pages/ApplicationTrackerPage'));
+const HRPrepPage = lazy(() => import('../../pages/HRPrepPage'));
+const RoadmapPage = lazy(() => import('../../pages/RoadmapPage'));
+const LeaderboardPage = lazy(() => import('../../pages/LeaderboardPage'));
+const InterviewChecklistPage = lazy(() => import('../../pages/InterviewChecklistPage'));
 
 // A full page skeleton fallback for suspense
 const PageLoader = () => (
@@ -200,6 +209,78 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<PageLoader />}>
             <LearnPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'companies',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <CompanyHubPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'companies/:id',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <CompanyDetailPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'community',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <CommunityPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'community/:id',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <PostDetailPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'applications',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ApplicationTrackerPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'hr-prep',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <HRPrepPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'roadmap',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <RoadmapPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'leaderboard',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <LeaderboardPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'checklist',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <InterviewChecklistPage />
           </Suspense>
         ),
       },
