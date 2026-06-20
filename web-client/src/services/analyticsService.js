@@ -34,14 +34,14 @@ export const getDashboardStats = async (userId, timeRange = 'all') => {
     // Extract real skills from reports
     const skillMap = {};
     reports.forEach(r => {
-      if (r.strengths) {
+      if (Array.isArray(r.strengths)) {
         r.strengths.forEach(s => {
-          skillMap[s] = (skillMap[s] || 80) + 2;
+          if (typeof s === 'string') skillMap[s] = (skillMap[s] || 80) + 2;
         });
       }
-      if (r.weaknesses) {
+      if (Array.isArray(r.weaknesses)) {
         r.weaknesses.forEach(w => {
-          skillMap[w] = (skillMap[w] || 80) - 2;
+          if (typeof w === 'string') skillMap[w] = (skillMap[w] || 80) - 2;
         });
       }
     });

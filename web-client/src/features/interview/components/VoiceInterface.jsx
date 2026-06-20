@@ -87,13 +87,13 @@ export function VoiceInterface({
   const isMicDisabled = phase === PHASE.AI_SPEAKING || phase === PHASE.AI_THINKING || phase === PHASE.FINISHED || isFinishing;
 
   return (
-    <div className="flex-1 flex flex-col items-center relative z-10 pb-16">
+    <div className="flex-1 flex flex-col items-center relative z-10 pb-16 overflow-hidden">
 
-      {/* ═══ TOP SECTION: Avatar + Question ═══════════════════════ */}
-      <div className="flex flex-col items-center justify-center flex-1 w-full">
+      {/* ═══ TOP SECTION: Avatar + Question (scrollable) ═══════════ */}
+      <div className="flex flex-col items-center w-full flex-1 overflow-hidden">
 
-        {/* Avatar indicator */}
-        <div className="flex items-center gap-3 mb-5">
+        {/* Avatar indicator — fixed, never scrolls away */}
+        <div className="flex items-center gap-3 mb-5 flex-shrink-0">
           <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-500 ${
             phase === PHASE.STUDENT_SPEAKING
               ? 'bg-gradient-to-br from-emerald-400 to-emerald-600'
@@ -131,14 +131,14 @@ export function VoiceInterface({
           </div>
         </div>
 
-        {/* Question counter pill */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">
+        {/* Question counter pill — fixed */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 flex-shrink-0">
           <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></span>
           Question {currentQuestionIndex + 1} of {aiQuestions.length || '—'}
         </div>
 
-        {/* Question / AI response text */}
-        <div className="text-center max-w-2xl mx-auto mb-6 px-4 overflow-y-auto max-h-[40vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-400">
+        {/* Question / AI response text — scrollable, capped height so mic is always visible */}
+        <div className="text-center max-w-2xl w-full mx-auto mb-4 px-4 overflow-y-auto flex-shrink min-h-0 max-h-[28vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-400">
           <h2 className={`text-xl font-bold leading-relaxed transition-colors duration-300 ${
             phase === PHASE.AI_THINKING ? 'text-slate-400' : 'text-slate-900'
           }`}>
@@ -146,8 +146,8 @@ export function VoiceInterface({
           </h2>
         </div>
 
-        {/* Waveform visualizer */}
-        <div ref={waveformRef} className="h-16 w-full max-w-sm flex items-center justify-center gap-[3px] mb-5">
+        {/* Waveform visualizer — fixed */}
+        <div ref={waveformRef} className="h-16 w-full max-w-sm flex items-center justify-center gap-[3px] mb-5 flex-shrink-0">
           {[...Array(40)].map((_, i) => (
             <div 
               key={i} 
@@ -161,8 +161,8 @@ export function VoiceInterface({
           ))}
         </div>
 
-        {/* ─── Mic Button ──────────────────────────────────────── */}
-        <div className="relative mb-2">
+        {/* ─── Mic Button — always visible ─────────────────────── */}
+        <div className="relative mb-2 flex-shrink-0">
           {/* Glow rings */}
           {phase === PHASE.STUDENT_SPEAKING && (
             <>
@@ -195,8 +195,8 @@ export function VoiceInterface({
           </button>
         </div>
 
-        {/* Mic label */}
-        <div className={`text-xs font-semibold tracking-wide mb-4 ${
+        {/* Mic label — fixed */}
+        <div className={`text-xs font-semibold tracking-wide mb-4 flex-shrink-0 ${
           phase === PHASE.STUDENT_IDLE ? 'text-emerald-600' :
           phase === PHASE.STUDENT_SPEAKING ? 'text-red-500' :
           'text-slate-400'

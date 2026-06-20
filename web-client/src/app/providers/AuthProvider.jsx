@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCredentials, logoutUser, restoreSession } from '../store/slices/authSlice';
+import { setCredentials, logoutUser } from '../store/slices/authSlice';
 import * as authService from '../../services/authService';
 
 const AuthContext = createContext(undefined);
@@ -9,9 +9,8 @@ export const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    dispatch(restoreSession());
-  }, [dispatch]);
+  // No useEffect needed — the Redux store is already hydrated from
+  // localStorage synchronously in authSlice's loadInitialState().
 
   const login = async (email, password) => {
     try {
@@ -26,7 +25,6 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     try {
-      // Backend returns data: { id, email } but no token until OTP verified
       const response = await authService.register({ name, email, password });
       return { success: true, message: response.message };
     } catch (error) {
@@ -42,7 +40,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     isAuthenticated,
-    loading: false, // Could be linked to Redux if async thunks were used
+    loading: false, // Store is hydrated synchronously — never a loading flash
     login,
     register,
     logout
@@ -58,4 +56,3 @@ export const useAuth = () => {
   }
   return context;
 };
-

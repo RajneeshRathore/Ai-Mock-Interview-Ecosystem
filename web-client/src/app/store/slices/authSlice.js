@@ -1,14 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  user: null,
-  isAuthenticated: false,
-  token: null,
+// Read localStorage synchronously so the store is hydrated BEFORE
+// the first render — this prevents ProtectedRoute from seeing
+// isAuthenticated=false and redirecting to /login on page refresh.
+const loadInitialState = () => {
+  try {
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    if (token && user) {
+      return { user: JSON.parse(user), token, isAuthenticated: true };
+    }
+  } catch { /* corrupted data — fall through */ }
+  return { user: null, token: null, isAuthenticated: false };
 };
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: loadInitialState(),
   reducers: {
     setCredentials: (state, action) => {
       const { user, token } = action.payload;
@@ -25,6 +33,7 @@ const authSlice = createSlice({
       localStorage.removeItem('token');
       localStorage.removeItem('user');
     },
+    // Kept for backwards-compatibility — no longer needed but harmless
     restoreSession: (state) => {
       const token = localStorage.getItem('token');
       const user = localStorage.getItem('user');

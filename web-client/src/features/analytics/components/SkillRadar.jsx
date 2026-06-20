@@ -32,7 +32,7 @@ export function SkillRadar({ data = [] }) {
 
             <Radar
               name="Skills"
-              dataKey="score"
+              dataKey="A"
               stroke="#8b5cf6"
               fill="#8b5cf6"
               fillOpacity={0.3}

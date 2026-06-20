@@ -1,15 +1,53 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Target, Map, Calendar, ChevronRight, CheckCircle2, Circle, ArrowRight, Lightbulb, Code, User, Play } from 'lucide-react';
+import { Target, Map, Calendar, ChevronRight, CheckCircle2, Circle, ArrowRight, Lightbulb, Code, User, Play, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+
+const STORAGE_KEY = 'ai_interview_roadmap';
+const COMPLETED_KEY = 'ai_interview_roadmap_completed';
 
 export default function RoadmapPage() {
   const navigate = useNavigate();
   const [targetCompany, setTargetCompany] = useState('');
-  const [duration, setDuration] = useState('4');
-  const [roadmap, setRoadmap] = useState(null);
+
+  // ─── Lazy initializers: read localStorage BEFORE first render ──
+  // This prevents the race condition where the persist effects fire
+  // with empty state (on mount) and wipe out saved data before the
+  // restore effect can load it.
+  const [duration, setDuration] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? (JSON.parse(saved).duration || '4') : '4';
+    } catch { return '4'; }
+  });
+
+  const [roadmap, setRoadmap] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved).roadmap : null;
+    } catch { return null; }
+  });
+
   const [generating, setGenerating] = useState(false);
-  const [completedItems, setCompletedItems] = useState(new Set());
+
+  const [completedItems, setCompletedItems] = useState(() => {
+    try {
+      const saved = localStorage.getItem(COMPLETED_KEY);
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch { return new Set(); }
+  });
+
+  // ─── Persist roadmap to localStorage whenever it changes ─────
+  useEffect(() => {
+    if (roadmap) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ roadmap, duration }));
+    }
+  }, [roadmap, duration]);
+
+  // ─── Persist completed items to localStorage ─────────────────
+  useEffect(() => {
+    localStorage.setItem(COMPLETED_KEY, JSON.stringify([...completedItems]));
+  }, [completedItems]);
 
   const handleGenerate = (e) => {
     e.preventDefault();
@@ -19,9 +57,19 @@ export default function RoadmapPage() {
     
     // Simulate AI generation delay
     setTimeout(() => {
-      setRoadmap(generateStaticRoadmap(targetCompany, parseInt(duration)));
+      const newRoadmap = generateStaticRoadmap(targetCompany, parseInt(duration));
+      setRoadmap(newRoadmap);
+      setCompletedItems(new Set()); // reset progress for new roadmap
       setGenerating(false);
     }, 1500);
+  };
+
+  const handleClearRoadmap = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(COMPLETED_KEY);
+    setRoadmap(null);
+    setCompletedItems(new Set());
+    setTargetCompany('');
   };
 
   const toggleItem = (weekIdx, itemIdx) => {
@@ -96,14 +144,24 @@ export default function RoadmapPage() {
               </div>
             </div>
 
-            <div className="flex items-end">
+            <div className="flex items-end gap-3">
               <button
                 type="submit"
                 disabled={generating || !targetCompany}
                 className="w-full sm:w-auto h-[50px] px-8 bg-gradient-to-r from-primary-600 to-indigo-600 text-white font-bold rounded-xl hover:shadow-lg transition-all hover:-translate-y-0.5 disabled:opacity-70 disabled:hover:translate-y-0 disabled:shadow-none"
               >
-                {generating ? 'Generating...' : 'Generate'}
+                {generating ? 'Generating...' : roadmap ? 'Regenerate' : 'Generate'}
               </button>
+              {roadmap && (
+                <button
+                  type="button"
+                  onClick={handleClearRoadmap}
+                  title="Clear current roadmap"
+                  className="h-[50px] px-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-red-500 hover:border-red-300 dark:hover:border-red-700 transition-all flex items-center gap-2 text-sm font-semibold"
+                >
+                  <Trash2 size={15} /> New Roadmap
+                </button>
+              )}
             </div>
           </form>
         </div>
