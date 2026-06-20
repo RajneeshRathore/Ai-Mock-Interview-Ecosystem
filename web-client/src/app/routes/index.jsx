@@ -39,6 +39,7 @@ const HRPrepPage = lazy(() => import('../../pages/HRPrepPage'));
 const RoadmapPage = lazy(() => import('../../pages/RoadmapPage'));
 const LeaderboardPage = lazy(() => import('../../pages/LeaderboardPage'));
 const InterviewChecklistPage = lazy(() => import('../../pages/InterviewChecklistPage'));
+const ReelsPage = lazy(() => import('../../pages/ReelsPage'));
 
 // A full page skeleton fallback for suspense
 const PageLoader = () => (
@@ -281,6 +282,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<PageLoader />}>
             <InterviewChecklistPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'reels',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ReelsPage />
           </Suspense>
         ),
       },

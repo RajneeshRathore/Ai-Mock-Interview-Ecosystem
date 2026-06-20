@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Users, FileText, LogOut, Video, BarChart2, FileBarChart, UserCircle, Moon, Sun, Bell, BookOpen, Building2, MessageSquare, Map, Briefcase, Trophy, ClipboardCheck } from "lucide-react";
+import { LayoutDashboard, Users, FileText, LogOut, Video, BarChart2, FileBarChart, UserCircle, Moon, Sun, Bell, BookOpen, Building2, MessageSquare, Map, Briefcase, Trophy, ClipboardCheck, Zap } from "lucide-react";
 import { NotificationDropdown } from "../components/common/NotificationDropdown";
 import { useAuth } from "../app/providers/AuthProvider";
 import { useState, useEffect } from "react";
@@ -38,6 +38,7 @@ export default function DashboardLayout() {
     { name: 'Analytics', path: '/dashboard/analytics', icon: <BarChart2 size={20} /> },
     { name: 'History', path: '/dashboard/interviews/history', icon: <FileText size={20} /> },
     { name: 'Learn DSA', path: '/dashboard/learn', icon: <BookOpen size={20} /> },
+    { name: 'Quick Reels', path: '/dashboard/reels', icon: <Zap size={20} /> },
     { name: 'Company Prep', path: '/dashboard/companies', icon: <Building2 size={20} /> },
     { name: 'Job Tracker', path: '/dashboard/applications', icon: <Briefcase size={20} /> },
     { name: 'Leaderboard', path: '/dashboard/leaderboard', icon: <Trophy size={20} /> },
