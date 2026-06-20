@@ -1,8 +1,9 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
+  port: Number(process.env.SMTP_PORT),
+  secure: false, // Port 587 uses STARTTLS
   auth: {
     user: process.env.SMTP_EMAIL,
     pass: process.env.SMTP_PASSWORD,
@@ -10,19 +11,21 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendEmail = async ({ to, subject, html }) => {
-  const mailOptions = {
-    from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
-    to,
-    subject,
-    html,
-  };
-
   try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Message sent: %s', info.messageId);
+    await transporter.verify();
+    console.log("✅ SMTP Connected Successfully");
+
+    const info = await transporter.sendMail({
+      from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
+      to,
+      subject,
+      html,
+    });
+
+    console.log("✅ Message sent:", info.messageId);
     return info;
   } catch (error) {
-    console.error('Email could not be sent', error);
-    throw new Error('Email could not be sent');
+    console.error("❌ Email Error:", error);
+    throw error;
   }
 };
